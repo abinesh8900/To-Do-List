@@ -56,3 +56,11 @@
   bottom: $bottom;
   left: $left;
 }
+
+@mixin breakpoint($point) {
+  @if $point == xs {
+    @media screen and (max-width: 450px) {
+      @content;
+    }
+  }
+}
