@@ -9,7 +9,7 @@ function delectTasksInList() {
   const delectTasks = toDoListContainer.querySelectorAll(".close-btn");
   for (delectTask of delectTasks) {
     delectTask.addEventListener("click", function () {
-      console.log("delect");
+      // console.log("delect");
       this.parentElement.remove();
     });
   }
@@ -18,7 +18,7 @@ function completedInList() {
   const completedTasks = toDoListContainer.querySelectorAll(".competed-btn");
   for (completedTask of completedTasks) {
     completedTask.addEventListener("click", function () {
-      console.log("comlpect");
+      // console.log("comlpect");
       this.parentElement.classList.add("completed");
     });
   }
@@ -26,6 +26,7 @@ function completedInList() {
 window.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
     addTaskImgContainer.classList.remove("active");
+    // addTaskImgContainer.querySelector("img").remove();
     const toDoList = document.createElement("div");
     toDoList.classList.add("todo-list");
 
@@ -47,7 +48,7 @@ window.addEventListener("keypress", (event) => {
     const closeBtnImg = document.createElement("img");
     closeBtnImg.setAttribute("src", "dist/images/close.svg");
     if (addTask.value.length === 0) {
-      console.log("cant add text");
+      // console.log("cant add text");
     } else {
       toDoListText.textContent = addTask.value;
 
@@ -62,9 +63,9 @@ window.addEventListener("keypress", (event) => {
       completedInList();
     }
     if (fileURl === "") {
-      console.log(" cant add img");
+      // console.log(" cant add img");
     } else {
-      console.log("work");
+      // console.log("work");
       const imageContainer = document.createElement("div");
       imageContainer.classList.add("image-container");
       const uplodedImg = document.createElement("img");
@@ -95,20 +96,24 @@ function pushImg() {
   {
     file = this.files[0];
     console.log(file);
-    const fileType = file.type.split("/");
-    fileType.pop();
-    if (fileType.join() === "image") {
-      let fileReader = new FileReader();
-      fileReader.onload = function () {
-        fileURl = fileReader.result;
-        addTaskImgContainer.classList.toggle("active");
-        addTaslkImg.setAttribute("src", `${fileURl}`);
-        addTaskImgContainer.append(addTaslkImg);
-        console.log(addTaslkImg);
-      };
-      fileReader.readAsDataURL(file);
+    if (file != undefined) {
+      const fileType = file.type.split("/");
+      fileType.pop();
+      if (fileType.join() === "image") {
+        let fileReader = new FileReader();
+        fileReader.onload = function () {
+          fileURl = fileReader.result;
+          addTaskImgContainer.classList.add("active");
+          addTaslkImg.setAttribute("src", `${fileURl}`);
+          addTaskImgContainer.append(addTaslkImg);
+          console.log(addTaslkImg);
+        };
+        fileReader.readAsDataURL(file);
+      } else {
+        console.log("file not suppoted");
+      }
     } else {
-      console.log("file not suppoted");
+      console.log("canceled to selelect image");
     }
   }
 }
