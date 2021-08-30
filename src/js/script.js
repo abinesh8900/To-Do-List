@@ -23,66 +23,86 @@ function completedInList() {
     });
   }
 }
+function showTastInList(notedTask, selectedImg) {
+  if (selectedImg == undefined) {
+    imageContainer = "hidden";
+    console.log("hidden");
+    selectedImg = "";
+  } else {
+    imageContainer = "image-container";
+    console.log("show");
+  }
+
+  const toDoList = document.createElement("div");
+  toDoList.classList.add("todo-list");
+
+  toDoListContainer.append(toDoList);
+  toDoList.innerHTML = `
+  <span class="inline-block competed-btn ">
+    <span class="tick-mark ">
+      <img src="dist/images/tick-mark.svg" alt="" />
+    </span>
+  </span>
+  <p class="inline-block todo-list__text"> ${notedTask}</p>
+  <span class="inline-block close-btn">
+    <img src="dist/images/close.svg" alt="" />
+  </span>
+  <div class=${imageContainer}>
+  <img src="${selectedImg}">
+  `;
+}
 window.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
-    addTaskImgContainer.classList.remove("active");
     // addTaskImgContainer.querySelector("img").remove();
-    const toDoList = document.createElement("div");
-    toDoList.classList.add("todo-list");
 
-    const completedBtn = document.createElement("span");
-    completedBtn.classList.add("inline-block", "competed-btn");
-
-    const tickMark = document.createElement("span");
-    tickMark.classList.add("tick-mark", "inline-block");
-
-    const tickMarkImg = document.createElement("img");
-    tickMarkImg.setAttribute("src", "dist/images/tick-mark.svg");
-
-    const toDoListText = document.createElement("p");
-    toDoListText.classList.add("inline-block", "todo-list__text");
-
-    const closeBtn = document.createElement("span");
-    closeBtn.classList.add("inline-block", "close-btn");
-
-    const closeBtnImg = document.createElement("img");
-    closeBtnImg.setAttribute("src", "dist/images/close.svg");
     if (addTask.value.length === 0) {
       // console.log("cant add text");
     } else {
-      toDoListText.textContent = addTask.value;
+      // toDoListText.textContent = addTask.value;
+      showTastInList(addTask.value);
+      // toDoListContainer.append(toDoList);
+      // toDoList.innerHTML = `
+      // <span class="inline-block competed-btn ">
+      //   <span class="tick-mark ">
+      //     <img src="dist/images/tick-mark.svg" alt="" />
+      //   </span>
+      // </span>
+      // <p class="inline-block todo-list__text"> ${addTask.value}</p>
+      // <span class="inline-block close-btn">
+      //   <img src="dist/images/close.svg" alt="" />
+      // </span>`;
 
-      toDoListContainer.append(toDoList);
-      toDoList.append(completedBtn, toDoListText, closeBtn); //imageContainer
-      completedBtn.append(tickMark);
-      tickMark.append(tickMarkImg);
-      closeBtn.append(closeBtnImg);
-
-      addTask.value = "";
+      // addTask.value = "";
       delectTasksInList();
       completedInList();
     }
     if (fileURl === "") {
-      // console.log(" cant add img");
+      addTask.value = "";
     } else {
+      addTaskImgContainer.classList.remove("active");
+      showTastInList(addTask.value, fileURl);
       // console.log("work");
-      const imageContainer = document.createElement("div");
-      imageContainer.classList.add("image-container");
-      const uplodedImg = document.createElement("img");
-      uplodedImg.setAttribute("src", `${fileURl}`);
-
-      toDoListContainer.append(toDoList);
-      toDoList.append(completedBtn, toDoListText, closeBtn);
-      completedBtn.append(tickMark);
-      tickMark.append(tickMarkImg);
-      closeBtn.append(closeBtnImg);
-      toDoList.append(imageContainer);
-      imageContainer.append(uplodedImg);
-
+      // toDoListContainer.append(toDoList);
+      // toDoList.innerHTML = `
+      // <span class="inline-block competed-btn ">
+      //   <span class="tick-mark ">
+      //     <img src="dist/images/tick-mark.svg" alt="" />
+      //   </span>
+      // </span>
+      // <p class="inline-block todo-list__text"> ${addTask.value}</p>
+      // <span class="inline-block close-btn">
+      //   <img src="dist/images/close.svg" alt="" />
+      // </span>
+      // <div class="image-container">
+      // <img src="${fileURl}">
+      // <div>
+      // `;
+      console.log(addTask.value);
       delectTasksInList();
       completedInList();
+      addTask.value = "";
+      fileURl = "";
     }
-    fileURl = "";
   }
 });
 
@@ -91,8 +111,8 @@ let fileURl = "";
 addImageIcon.addEventListener("click", () => {
   addImage.click();
 });
-addImage.addEventListener("change", pushImg);
-function pushImg() {
+addImage.addEventListener("change", showImage);
+function showImage() {
   {
     file = this.files[0];
     console.log(file);
@@ -113,7 +133,7 @@ function pushImg() {
         console.log("file not suppoted");
       }
     } else {
-      console.log("canceled to selelect image");
+      console.log("fail to select img");
     }
   }
 }
